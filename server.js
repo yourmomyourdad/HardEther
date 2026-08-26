@@ -6,7 +6,7 @@ const PORT = 8080;
 
 const wss = new WebSocketServer({
     port: PORT
-});/ ...
+}); ...
 });
 wss.on("connection", ws => {
     console.log("Frontend connected");
