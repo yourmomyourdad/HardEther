@@ -29,6 +29,7 @@ wss.on("connection", ws => {
                     break;
 
                 case "navigate":
+                    console.log("Navigating to:", message.url);
                     await browser.navigate(message.url);
                     break;
 
