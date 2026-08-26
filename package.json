@@ -1,0 +1,13 @@
+{
+  "name": "hardether",
+  "version": "1.0.0",
+  "description": "HardEther remote browser backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "playwright": "^1.55.0",
+    "ws": "^8.18.3"
+  }
+}
