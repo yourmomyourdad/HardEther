@@ -6,8 +6,8 @@ const PORT = 8080;
 
 const wss = new WebSocketServer({
     port: PORT
+});/ ...
 });
-
 wss.on("connection", ws => {
     console.log("Frontend connected");
 
@@ -15,6 +15,10 @@ wss.on("connection", ws => {
         type: "connected"
     }));
 
+    ws.on("error", (error) => {
+        console.error("WebSocket client error:", error);
+    });
+    
     ws.on("message", async raw => {
         try {
             const message = JSON.parse(raw.toString());
