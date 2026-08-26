@@ -63,11 +63,16 @@ async function keyDown(key) {
 async function keyUp(key) {
     await page.keyboard.up(key);
 }
-
+async function screenShot() {
+    return await page.screenshot({
+        type: "png"
+    });
+}
 module.exports = {
     startBrowser,
     setViewport,
     navigate,
+    screenShot,
     mouseMove,
     mouseDown,
     mouseUp,
