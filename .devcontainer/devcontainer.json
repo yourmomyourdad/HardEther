@@ -2,7 +2,7 @@
   "name": "Hardether Node Server",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
 
-  "postCreateCommand": "npm install && npm install ws && npm init -y && npm install ws playwright && npx playwright install chromium && sudo curl -L --output /usr/local/bin/cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 && sudo chmod +x /usr/local/bin/cloudflared && sudo curl -L -o /usr/local/bin/cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 && sudo chmod +x /usr/local/bin/cloudflared",
+  "postCreateCommand": "npm install && npm install ws && npm install playwright && npx playwright install chromium && npm init -y && npm install ws playwright && npx playwright install chromium && sudo curl -L --output /usr/local/bin/cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 && sudo chmod +x /usr/local/bin/cloudflared && sudo curl -L -o /usr/local/bin/cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 && sudo chmod +x /usr/local/bin/cloudflared",
 
   "postStartCommand": "cloudflared tunnel run --token eyJhIjoiMWRjZTJlMWNmZjA0Y2Y4MThkMmU5OTVjZWRhYmRiMTMiLCJ0IjoiZjY2YzM5NjMtYTY5Ni00YTM3LTllZTgtMjg1ODM3M2IwZTU4IiwicyI6Ik5XUm1aRFF5T1dJdE1HTmtZaTAwTnpSbUxXSXdaVFV0TnpFNE9XRmhaV0ZtTmpBMyJ9 & node server.js &"
 }
