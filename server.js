@@ -1,20 +1,32 @@
 const { WebSocketServer } = require("ws");
-
 const browser = require("./browser");
 
 const PORT = 8080;
 
 const wss = new WebSocketServer({
     port: PORT
-}); ...
 });
-wss.on("connection", ws => {
-    console.log("Frontend connected");
+
+wss.on("listening", () => {
+    console.log(`WebSocket server listening on ${PORT}`);
+});
+
+wss.on("error", (error) => {
+    console.error("WebSocket server error:", error);
+});
+
+wss.on("connection", (ws, request) => {
+    console.log("🔥 FRONTEND CONNECTED!");
+    console.log("Origin:", request.headers.origin);
+
+    ws.on("error", (error) => {
+        console.error("WebSocket client error:", error);
+    });
 
     ws.send(JSON.stringify({
         type: "connected"
     }));
-    
+
     ws.on("message", async raw => {
         try {
             const message = JSON.parse(raw.toString());
@@ -77,7 +89,7 @@ wss.on("connection", ws => {
             }
 
         } catch (error) {
-            console.error(error);
+            console.error("Message error:", error);
 
             ws.send(JSON.stringify({
                 type: "error",
@@ -94,6 +106,5 @@ wss.on("connection", ws => {
 browser.startBrowser()
     .then(() => {
         console.log("Chromium ready");
-        console.log(`WSS server listening on ${PORT}`);
     })
     .catch(console.error);
