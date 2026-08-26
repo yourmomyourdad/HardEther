@@ -1,29 +1,8 @@
 const { WebSocketServer } = require("ws");
-const { chromium } = require("playwright");
+
+const browser = require("./browser");
 
 const PORT = 8080;
-
-let browser;
-let page;
-
-async function startBrowser() {
-    browser = await chromium.launch({
-        headless: false
-    });
-
-    const context = await browser.newContext({
-        viewport: {
-            width: 1280,
-            height: 720
-        }
-    });
-
-    page = await context.newPage();
-
-    await page.goto("https://example.com");
-
-    console.log("Chromium started");
-}
 
 const wss = new WebSocketServer({
     port: PORT
@@ -33,56 +12,49 @@ wss.on("connection", ws => {
     console.log("Frontend connected");
 
     ws.send(JSON.stringify({
-        type: "ready",
-        width: 1280,
-        height: 720
+        type: "connected"
     }));
 
     ws.on("message", async raw => {
         try {
             const message = JSON.parse(raw.toString());
 
-            if (!page) return;
-
             switch (message.type) {
 
+                case "viewport":
+                    await browser.setViewport(
+                        message.width,
+                        message.height
+                    );
+                    break;
+
                 case "navigate":
-                    await page.goto(message.url);
+                    await browser.navigate(message.url);
                     break;
 
                 case "mouse":
 
                     if (message.action === "move") {
-                        await page.mouse.move(
+                        await browser.mouseMove(
                             message.x,
                             message.y
                         );
                     }
 
-                    if (message.action === "down") {
-                        await page.mouse.move(
-                            message.x,
-                            message.y
+                    else if (message.action === "down") {
+                        await browser.mouseDown(
+                            message.button
                         );
-
-                        await page.mouse.down({
-                            button: message.button
-                        });
                     }
 
-                    if (message.action === "up") {
-                        await page.mouse.move(
-                            message.x,
-                            message.y
+                    else if (message.action === "up") {
+                        await browser.mouseUp(
+                            message.button
                         );
-
-                        await page.mouse.up({
-                            button: message.button
-                        });
                     }
 
-                    if (message.action === "wheel") {
-                        await page.mouse.wheel(
+                    else if (message.action === "wheel") {
+                        await browser.mouseWheel(
                             message.dx,
                             message.dy
                         );
@@ -93,18 +65,23 @@ wss.on("connection", ws => {
                 case "keyboard":
 
                     if (message.action === "down") {
-                        await page.keyboard.down(message.key);
+                        await browser.keyDown(message.key);
                     }
 
-                    if (message.action === "up") {
-                        await page.keyboard.up(message.key);
+                    else if (message.action === "up") {
+                        await browser.keyUp(message.key);
                     }
 
                     break;
             }
 
         } catch (error) {
-            console.error("Message error:", error);
+            console.error(error);
+
+            ws.send(JSON.stringify({
+                type: "error",
+                message: error.message
+            }));
         }
     });
 
@@ -113,6 +90,9 @@ wss.on("connection", ws => {
     });
 });
 
-startBrowser().catch(console.error);
-
-console.log(`WebSocket server listening on ${PORT}`);
+browser.startBrowser()
+    .then(() => {
+        console.log("Chromium ready");
+        console.log(`WSS server listening on ${PORT}`);
+    })
+    .catch(console.error);
