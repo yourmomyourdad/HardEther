@@ -35,7 +35,6 @@ async function setViewport(width, height) {
 }
 
 async function navigate(url) {
-    console.log("Navigating to:", url);
     if (!page) return;
 
     await page.goto(url);
