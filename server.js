@@ -44,7 +44,19 @@ wss.on("connection", (ws, request) => {
                     console.log("Navigating to:", message.url);
                     await browser.navigate(message.url);
                     break;
+                case "screenshot":
+    console.log("Taking screenshot...");
 
+    const screenshot = await browser.screenshot();
+
+    ws.send(JSON.stringify({
+        type: "screenshot",
+        data: screenshot.toString("base64")
+    }));
+
+    console.log("Screenshot sent!");
+
+    break;
                 case "mouse":
 
                     if (message.action === "move") {
