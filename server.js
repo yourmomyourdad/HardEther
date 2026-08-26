@@ -14,10 +14,6 @@ wss.on("connection", ws => {
     ws.send(JSON.stringify({
         type: "connected"
     }));
-
-    ws.on("error", (error) => {
-        console.error("WebSocket client error:", error);
-    });
     
     ws.on("message", async raw => {
         try {
