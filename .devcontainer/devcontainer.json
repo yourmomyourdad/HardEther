@@ -2,7 +2,7 @@
   "name": "HardEther Node Server",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
 
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y xvfb && npm install && npx playwright install --with-deps chromium && sudo curl -L --output /usr/local/bin/cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 && sudo chmod +x /usr/local/bin/cloudflared",
+  "postCreateCommand": "npm install @roamhq/wrtc && sudo apt-get update && sudo apt-get install -y xvfb && npm install && npx playwright install --with-deps chromium && sudo curl -L --output /usr/local/bin/cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 && sudo chmod +x /usr/local/bin/cloudflared",
 
   "forwardPorts": [8080],
 
