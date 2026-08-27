@@ -78,6 +78,15 @@ ws.send(JSON.stringify({
 
     break;
 }
+                    case "ice":
+
+    console.log("Received frontend ICE candidate");
+
+    await pc.addIceCandidate(
+        new RTCIceCandidate(message.candidate)
+    );
+
+    break;
 
                 case "viewport":
                     await browser.setViewport(
