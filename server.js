@@ -53,6 +53,29 @@ ws.send(JSON.stringify({
             const message = JSON.parse(raw.toString());
 
             switch (message.type) {
+                case "webrtc-offer": {
+    console.log("Received WebRTC offer");
+
+    await pc.setRemoteDescription(
+        new RTCSessionDescription(message.offer)
+    );
+
+    const answer = await pc.createAnswer();
+
+    await pc.setLocalDescription(answer);
+
+    ws.send(JSON.stringify({
+        type: "webrtc-answer",
+        answer: {
+            type: pc.localDescription.type,
+            sdp: pc.localDescription.sdp
+        }
+    }));
+
+    console.log("Sent WebRTC answer");
+
+    break;
+}
 
                 case "viewport":
                     await browser.setViewport(
