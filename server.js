@@ -1,4 +1,7 @@
 const { WebSocketServer } = require("ws");
+const {
+    RTCPeerConnection
+} = require("@roamhq/wrtc");
 const browser = require("./browser");
 
 const PORT = 8080;
@@ -16,6 +19,24 @@ wss.on("error", (error) => {
 });
 
 wss.on("connection", (ws, request) => {
+    const pc = new RTCPeerConnection();
+
+pc.onicecandidate = event => {
+    if (event.candidate) {
+        ws.send(JSON.stringify({
+            type: "ice",
+            candidate: event.candidate
+        }));
+    }
+};
+
+pc.onconnectionstatechange = () => {
+    console.log("WebRTC state:", pc.connectionState);
+};
+
+ws.send(JSON.stringify({
+    type: "webrtc-ready"
+}));
     console.log("🔥 FRONTEND CONNECTED!");
     console.log("Origin:", request.headers.origin);
 
