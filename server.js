@@ -1,7 +1,8 @@
 const { WebSocketServer } = require("ws");
 const {
     RTCPeerConnection,
-    RTCSessionDescription
+    RTCSessionDescription,
+    RTCIceCandidate
 } = require("@roamhq/wrtc");
 const browser = require("./browser");
 
