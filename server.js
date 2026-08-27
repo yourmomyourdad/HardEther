@@ -31,6 +31,10 @@ wss.on("connection", (ws, request) => {
 
 pc.onicecandidate = event => {
     if (event.candidate) {
+         console.log(
+            "Node ICE candidate:",
+            event.candidate.candidate
+        );
         ws.send(JSON.stringify({
             type: "ice",
             candidate: event.candidate
