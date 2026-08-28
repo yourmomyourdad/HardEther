@@ -34,23 +34,25 @@ function startVideoCapture() {
         "pipe:1"
     ]);
 
-    const frameSize = 1280 * 720 * 1.5;
+
+    const FRAME_SIZE = 1280 * 720 * 3 / 2;
     let buffer = Buffer.alloc(0);
 
     ffmpeg.stdout.on("data", chunk => {
 
-        buffer = Buffer.concat([buffer, chunk]);
+    buffer = Buffer.concat([buffer, chunk]);
 
-        while (buffer.length >= frameSize) {
+    while (buffer.length >= FRAME_SIZE) {
 
-            const frame = buffer.subarray(0, frameSize);
-            buffer = buffer.subarray(frameSize);
+        const frame = buffer.subarray(0, FRAME_SIZE);
 
-            videoSource.onFrame({
-                width: 1280,
-                height: 720,
-                data: frame
-            });
+        buffer = buffer.subarray(FRAME_SIZE);
+
+        videoSource.onFrame({
+            width: 1280,
+            height: 720,
+            data: frame
+        });
         }
     });
 
