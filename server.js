@@ -23,16 +23,16 @@ const { spawn } = require("child_process");
 let ffmpeg;
 
 function startVideoCapture() {
-    ffmpeg = spawn("ffmpeg", [
-        "-f", "x11grab",
-        "-video_size", "1280x720",
-        "-framerate", "30",
-        "-i", ":99.0",
+    ffmpeg = spawn("ffmpeg",[
+    "-f", "x11grab",
+    "-video_size", "1280x720",
+    "-framerate", "30",
+    "-i", ":99.0",
 
-        "-f", "rawvideo",
-        "-pix_fmt", "yuv420p",
-        "pipe:1"
-    ]);
+    "-f", "rawvideo",
+    "-pix_fmt", "yuv420p",
+    "pipe:1"
+]);
 
 
     const FRAME_SIZE = 1280 * 720 * 3 / 2;
