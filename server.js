@@ -1,9 +1,17 @@
+const videoSource = new RTCVideoSource();
+const videoTrack = videoSource.createTrack();
 const { WebSocketServer } = require("ws");
 const {
     RTCPeerConnection,
     RTCSessionDescription,
-    RTCIceCandidate
+    RTCIceCandidate,
+    nonstandard
 } = require("@roamhq/wrtc");
+
+const {
+    RTCVideoSource
+} = nonstandard;
+
 const browser = require("./browser");
 
 const PORT = 8080;
@@ -28,7 +36,7 @@ wss.on("connection", (ws, request) => {
         }
     ]
 });
-
+pc.addTrack(videoTrack);
 pc.onicecandidate = event => {
     if (event.candidate) {
          console.log(
