@@ -19,7 +19,50 @@ const PORT = 8080;
 const wss = new WebSocketServer({
     port: PORT
 });
+const { spawn } = require("child_process");
 
+let ffmpeg;
+
+function startVideoCapture() {
+    ffmpeg = spawn("ffmpeg", [
+        "-f", "x11grab",
+        "-video_size", "1280x720",
+        "-framerate", "30",
+        "-i", ":99.0",
+
+        "-f", "rawvideo",
+        "-pix_fmt", "yuv420p",
+        "pipe:1"
+    ]);
+
+    const frameSize = 1280 * 720 * 1.5;
+    let buffer = Buffer.alloc(0);
+
+    ffmpeg.stdout.on("data", chunk => {
+
+        buffer = Buffer.concat([buffer, chunk]);
+
+        while (buffer.length >= frameSize) {
+
+            const frame = buffer.subarray(0, frameSize);
+            buffer = buffer.subarray(frameSize);
+
+            videoSource.onFrame({
+                width: 1280,
+                height: 720,
+                data: frame
+            });
+        }
+    });
+
+    ffmpeg.stderr.on("data", data => {
+        console.log("FFmpeg:", data.toString());
+    });
+
+    ffmpeg.on("close", code => {
+        console.log("FFmpeg exited:", code);
+    });
+}
 wss.on("listening", () => {
     console.log(`WebSocket server listening on ${PORT}`);
 });
@@ -191,5 +234,6 @@ ws.send(JSON.stringify({
 browser.startBrowser()
     .then(() => {
         console.log("Chromium ready");
+          startVideoCapture();
     })
     .catch(console.error);
