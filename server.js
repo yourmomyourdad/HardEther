@@ -1,5 +1,3 @@
-const videoSource = new RTCVideoSource();
-const videoTrack = videoSource.createTrack();
 const { WebSocketServer } = require("ws");
 const {
     RTCPeerConnection,
@@ -11,7 +9,8 @@ const {
 const {
     RTCVideoSource
 } = nonstandard;
-
+const videoSource = new RTCVideoSource();
+const videoTrack = videoSource.createTrack();
 const browser = require("./browser");
 
 const PORT = 8080;
