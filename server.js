@@ -20,41 +20,51 @@ const wss = new WebSocketServer({
 });
 const { spawn } = require("child_process");
 
-let ffmpeg;
-
 function startVideoCapture() {
-    ffmpeg = spawn("ffmpeg",[
-    "-f", "x11grab",
-    "-video_size", "1280x720",
-    "-framerate", "30",
-    "-i", ":99.0",
 
-    "-f", "rawvideo",
-    "-pix_fmt", "yuv420p",
-    "pipe:1"
-]);
+    const WIDTH = 1280;
+    const HEIGHT = 720;
+    const FRAME_SIZE = WIDTH * HEIGHT * 3 / 2;
 
+    const ffmpeg = spawn("ffmpeg", [
+        "-f", "x11grab",
+        "-video_size", `${WIDTH}x${HEIGHT}`,
+        "-framerate", "30",
+        "-i", ":99.0",
 
-    const FRAME_SIZE = 1280 * 720 * 3 / 2;
+        "-f", "rawvideo",
+        "-pix_fmt", "yuv420p",
+        "pipe:1"
+    ]);
+
     let buffer = Buffer.alloc(0);
 
     ffmpeg.stdout.on("data", chunk => {
 
-    buffer = Buffer.concat([buffer, chunk]);
+        buffer = Buffer.concat([buffer, chunk]);
 
-    while (buffer.length >= FRAME_SIZE) {
+        while (buffer.length >= FRAME_SIZE) {
 
-        const frame = buffer.subarray(0, FRAME_SIZE);
+            const frame = buffer.subarray(0, FRAME_SIZE);
 
-        buffer = buffer.subarray(FRAME_SIZE);
+            buffer = buffer.subarray(FRAME_SIZE);
 
-        videoSource.onFrame({
-            width: 1280,
-            height: 720,
-            data: frame
-        });
+            videoSource.onFrame({
+                width: WIDTH,
+                height: HEIGHT,
+                data: frame
+            });
         }
     });
+
+    ffmpeg.stderr.on("data", data => {
+        console.log("FFmpeg:", data.toString());
+    });
+
+    ffmpeg.on("close", code => {
+        console.log("FFmpeg exited:", code);
+    });
+}
 
     ffmpeg.stderr.on("data", data => {
         console.log("FFmpeg:", data.toString());
