@@ -69,7 +69,9 @@ function startVideoCapture() {
         buffer = Buffer.concat([buffer, chunk]);
 
         while (buffer.length >= FRAME_SIZE) {
-            const frame = buffer.subarray(0, FRAME_SIZE);
+            const frame = Buffer.from(
+    buffer.subarray(0, FRAME_SIZE)
+);
 
             buffer = buffer.subarray(FRAME_SIZE);
             console.log(
