@@ -72,7 +72,14 @@ function startVideoCapture() {
             const frame = buffer.subarray(0, FRAME_SIZE);
 
             buffer = buffer.subarray(FRAME_SIZE);
-
+            console.log(
+    "FRAME:",
+    frame.length,
+    "EXPECTED:",
+    FRAME_SIZE,
+    "BUFFER:",
+    buffer.length
+);
             videoSource.onFrame({
                 width: WIDTH,
                 height: HEIGHT,
