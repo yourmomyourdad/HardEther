@@ -18,6 +18,20 @@ async function startBrowser() {
 
     page = await context.newPage();
 
+    
+    console.log("Moving mouse to 100,100...");
+    await page.mouse.move(100, 100);
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    console.log("Moving mouse to 600,400...");
+    await page.mouse.move(600, 400);
+
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
+    console.log("Mouse test finished");
+
+    
     await page.goto("https://example.com");
 
     console.log("Browser started");
