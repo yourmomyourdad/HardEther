@@ -5,12 +5,14 @@ let context;
 let page;
 
 async function startBrowser() {
-    browser = await chromium.launch({
+   browser = await chromium.launch({
     headless: false,
     args: [
-        "--app=https://google.com",
+        "--app=https://example.com",
         "--window-size=1280,720",
         "--window-position=0,0",
+        "--start-fullscreen",
+        "--disable-features=Translate,OptimizationHints",
         "--disable-infobars"
     ]
 });
