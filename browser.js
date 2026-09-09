@@ -110,34 +110,12 @@ async function mouseMove(x, y) {
     ]);
 }
 
-async function mouseClick(x, y, button = 1) {
-    if (!windowId) await findBrowser();
-
-    await xdotool([
-        "mousemove",
-        String(Math.round(x)),
-        String(Math.round(y))
-    ]);
-
-    await xdotool([
-        "click",
-        String(button)
-    ]);
-}
-async function mouseDown(x, y, button = "left") {
+async function mouseDown(button = "left") {
     const buttonNumber =
         button === "left" ? 1 :
         button === "middle" ? 2 :
         button === "right" ? 3 :
         Number(button);
-
-    await xdotool([
-        "mousemove",
-        String(Math.round(x)),
-        String(Math.round(y))
-    ]);
-
-    console.log("Clicking:", x, y, buttonNumber);
 
     await xdotool([
         "click",
@@ -146,12 +124,8 @@ async function mouseDown(x, y, button = "left") {
 }
 
 async function mouseUp() {
-    // Do nothing for now.
+    // Nothing for now.
 }
-async function mouseUp(button = 1) {
-    // Do nothing.
-}
-
 async function mouseWheel(dx, dy) {
     if (!windowId) await findBrowser();
 
