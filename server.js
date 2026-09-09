@@ -41,7 +41,7 @@ wss.on("error", error => {
 // FFmpeg → Xvfb → WebRTC
 // ─────────────────────────────────────────────
 
-function startVideoCapture() {
+function startVideoCapture(chromeHeight) {
     const WIDTH = 1280;
     const HEIGHT = 720;
 
