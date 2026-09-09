@@ -132,18 +132,13 @@ async function mouseDown(button = 1) {
     if (!windowId) await findBrowser();
 
     await xdotool([
-        "mousedown",
+        "click",
         String(button)
     ]);
 }
 
 async function mouseUp(button = 1) {
-    if (!windowId) await findBrowser();
-
-    await xdotool([
-        "mouseup",
-        String(button)
-    ]);
+    // Do nothing.
 }
 
 async function mouseWheel(dx, dy) {
