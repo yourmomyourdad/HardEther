@@ -19,8 +19,8 @@ DISPLAY=:99 chromium \
     --no-default-browser-check \
     --disable-session-crashed-bubble \
     --disable-infobars \
-    about:blank &
-
+    about:blank /
+     >/tmp/chromium.log 2>&1 &
 sleep 3
 
 DISPLAY=:99 node server.js
