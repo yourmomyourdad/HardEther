@@ -65,11 +65,6 @@ async function startBrowser() {
 
     await findBrowser();
 
-    await xdotool([
-        "windowactivate",
-        "--sync",
-        windowId
-    ]);
 
     console.log("Chromium ready");
 
@@ -81,28 +76,30 @@ async function navigate(url) {
         await findBrowser();
     }
 
-    await xdotool([
-        "windowactivate",
-        "--sync",
-        windowId
-    ]);
 
     await xdotool([
-        "key",
-        "ctrl+l"
-    ]);
+    "key",
+    "--window",
+    windowId,
+    "ctrl+l"
+]);
 
-    await xdotool([
-        "type",
-        "--delay",
-        "0",
-        url
-    ]);
+await xdotool([
+    "type",
+    "--window",
+    windowId,
+    "--delay",
+    "0",
+    url
+]);
 
-    await xdotool([
-        "key",
-        "Return"
-    ]);
+await xdotool([
+    "key",
+    "--window",
+    windowId,
+    "Return"
+]);
+    
 }
 
 async function mouseMove(x, y) {
@@ -128,14 +125,6 @@ async function mouseClick(button = 1) {
     ]);
 }
 
-async function mouseDown(button = 1) {
-    if (!windowId) await findBrowser();
-
-    await xdotool([
-        "click",
-        String(button)
-    ]);
-}
 
 async function mouseUp(button = 1) {
     // Do nothing.
