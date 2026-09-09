@@ -21,28 +21,15 @@ async function startBrowser() {
 
     
     
-   const link = page.locator("a");
+  console.log("CLICK TEST START");
 
-    const box = await link.boundingBox();
+await page.locator("a").click();
 
-    console.log("LINK POSITION:", box);
+console.log("CLICK TEST FINISHED");
 
-    if (box) {
-        const x = box.x + box.width / 2;
-        const y = box.y + box.height / 2;
+await page.waitForTimeout(3000);
 
-        console.log("Moving mouse to:", x, y);
-
-        await page.mouse.move(x, y);
-
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        console.log("CLICKING!");
-
-        await page.mouse.click(x, y);
-
-        console.log("CLICK FINISHED");
-    }
+console.log("CURRENT URL:", page.url());
 
 
 
