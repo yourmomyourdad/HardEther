@@ -18,18 +18,33 @@ async function startBrowser() {
 
     page = await context.newPage();
 
+
     
-    console.log("Moving mouse to 100,100...");
-    await page.mouse.move(100, 100);
+    
+   const link = page.locator("a");
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    const box = await link.boundingBox();
 
-    console.log("Moving mouse to 600,400...");
-    await page.mouse.move(600, 400);
+    console.log("LINK POSITION:", box);
 
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    if (box) {
+        const x = box.x + box.width / 2;
+        const y = box.y + box.height / 2;
 
-    console.log("Mouse test finished");
+        console.log("Moving mouse to:", x, y);
+
+        await page.mouse.move(x, y);
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        console.log("CLICKING!");
+
+        await page.mouse.click(x, y);
+
+        console.log("CLICK FINISHED");
+    }
+
+
 
     
     await page.goto("https://example.com");
