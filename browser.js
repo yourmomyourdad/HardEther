@@ -70,7 +70,7 @@ async function screenshot() {
 }
 const { execFile } = require("child_process");
 
-function findBarHeight() {
+async function findBarHeight() {
     return new Promise((resolve, reject) => {
         execFile(
             "xdotool",
