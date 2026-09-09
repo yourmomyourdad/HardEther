@@ -144,7 +144,7 @@ async function mouseDown(x, y, button = 1) {
 }
 
 async function mouseUp() {
-    // Nothing for now.
+    // Do nothing for now.
 }
 async function mouseUp(button = 1) {
     // Do nothing.
