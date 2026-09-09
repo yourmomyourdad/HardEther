@@ -313,7 +313,7 @@ wss.on("connection", (ws, request) => {
                 // ─────────────────────────────
 
                 case "mouse": {
-
+                    console.log("MOUSE RECEIVED:", message);
                     if (
                         message.action === "move"
                     ) {
