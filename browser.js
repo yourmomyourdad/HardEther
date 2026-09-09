@@ -68,6 +68,78 @@ async function screenshot() {
         type: "png"
     });
 }
+const { execFile } = require("child_process");
+
+function findBarHeight() {
+    return new Promise((resolve, reject) => {
+        execFile(
+            "xdotool",
+            [
+                "search",
+                "--onlyvisible",
+                "--class",
+                "chromium",
+                "getwindowgeometry"
+            ],
+            {
+                env: {
+                    ...process.env,
+                    DISPLAY: ":99"
+                }
+            },
+            (error, stdout, stderr) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                const match = stdout.match(
+                    /Geometry:\s*(\d+)x(\d+)/
+                );
+
+                if (!match) {
+                    reject(
+                        new Error(
+                            "Could not find Chromium window geometry"
+                        )
+                    );
+                    return;
+                }
+
+                const windowWidth = Number(match[1]);
+                const windowHeight = Number(match[2]);
+
+                const viewport = page.viewportSize();
+
+                if (!viewport) {
+                    reject(
+                        new Error(
+                            "Could not determine Playwright viewport"
+                        )
+                    );
+                    return;
+                }
+
+                const barHeight =
+                    windowHeight - viewport.height;
+
+                console.log(
+                    `Chromium: ${windowWidth}x${windowHeight}`
+                );
+
+                console.log(
+                    `Viewport: ${viewport.width}x${viewport.height}`
+                );
+
+                console.log(
+                    `Browser bar: ${barHeight}px`
+                );
+
+                resolve(barHeight);
+            }
+        );
+    });
+}
 module.exports = {
     startBrowser,
     setViewport,
