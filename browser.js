@@ -5,16 +5,24 @@ let page;
 
 async function startBrowser() {
     context = await chromium.launchPersistentContext(
-        "./browser-profile",
-        {
-            headless: false,
+    "./browser-profile",
+    {
+        headless: false,
 
-            viewport: {
-                width: 1280,
-                height: 720
-            }
+        args: [
+            "--app=about:blank",
+            "--disable-infobars",
+            "--disable-session-crashed-bubble",
+            "--no-first-run",
+            "--no-default-browser-check"
+        ],
+
+        viewport: {
+            width: 1280,
+            height: 720
         }
-    );
+    }
+);
 
     page = context.pages()[0];
 
