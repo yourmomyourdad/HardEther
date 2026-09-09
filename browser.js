@@ -114,25 +114,37 @@ async function mouseMove(x, y) {
     ]);
 }
 
-async function mouseClick(button = 1) {
+async function mouseClick(x, y, button = 1) {
     if (!windowId) await findBrowser();
 
     await xdotool([
+        "mousemove",
+        String(Math.round(x)),
+        String(Math.round(y))
+    ]);
+
+    await xdotool([
         "click",
-        "--window",
-        windowId,
         String(button)
     ]);
 }
-async function mouseDown(button = 1) {
+async function mouseDown(x, y, button = 1) {
     if (!windowId) await findBrowser();
 
     await xdotool([
+        "mousemove",
+        String(Math.round(x)),
+        String(Math.round(y))
+    ]);
+
+    await xdotool([
         "click",
-        "--window",
-        windowId,
         String(button)
     ]);
+}
+
+async function mouseUp() {
+    // Nothing for now.
 }
 async function mouseUp(button = 1) {
     // Do nothing.
