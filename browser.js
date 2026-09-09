@@ -20,35 +20,24 @@ async function startBrowser() {
 
     
     await page.goto("https://example.com");
+    
     await page.setContent(`
-<!DOCTYPE html>
-<html>
-<body style="
-    margin: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #111;
-    color: white;
-    font-family: monospace;
-">
-    <div id="pos" style="
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        font-size: 32px;
-    ">
-        MOUSE: waiting...
-    </div>
+        <!DOCTYPE html>
+        <html>
+        <body style="margin:0; background:#111; color:white; font:30px monospace;">
+            <div id="mouse">X: 0<br>Y: 0</div>
 
-    <script>
-        document.addEventListener("mousemove", event => {
-            document.getElementById("pos").textContent =
-                "MOUSE: " + event.clientX + ", " + event.clientY;
-        });
-    </script>
-</body>
-</html>
-`);
+            <script>
+                document.addEventListener("mousemove", event => {
+                    document.getElementById("mouse").innerHTML =
+                        "X: " + event.clientX +
+                        "<br>Y: " + event.clientY;
+                });
+            </script>
+        </body>
+        </html>
+    `);
+
     console.log("Browser started");
 
     return page;
