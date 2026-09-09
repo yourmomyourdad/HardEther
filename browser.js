@@ -6,10 +6,7 @@ let page;
 
 async function startBrowser() {
    browser = await chromium.launch({
-    headless: false,
-    args: [
-        "--kiosk"
-    ]
+    headless: false
 });
 
     context = await browser.newContext({
