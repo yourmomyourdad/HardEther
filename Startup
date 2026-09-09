@@ -13,14 +13,15 @@ DISPLAY=:99 unclutter -display :99 -idle 0 &
 DISPLAY=:99 chromium \
     --no-sandbox \
     --disable-setuid-sandbox \
+    --disable-gpu \
     --user-data-dir="$PWD/browser-profile" \
     --app=about:blank \
     --no-first-run \
     --no-default-browser-check \
     --disable-session-crashed-bubble \
     --disable-infobars \
-    about:blank /
-     >/tmp/chromium.log 2>&1 &
+    about:blank \
+    >/tmp/chromium.log 2>&1 &
 sleep 3
 
 DISPLAY=:99 node server.js
