@@ -412,7 +412,10 @@ browser.startBrowser()
 
         // Start Xvfb screen capture → WebRTC
         startVideoCapture();
-
+        console.log(
+            "🎯 FINAL BAR HEIGHT:",
+            height
+        );
     })
     .catch(error => {
 
