@@ -312,8 +312,6 @@ wss.on("connection", (ws, request) => {
     } else if (message.action === "down") {
 
         await browser.mouseDown(
-            message.x,
-            message.y,
             message.button
         );
 
