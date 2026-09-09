@@ -159,7 +159,6 @@ module.exports = {
     findBrowser,
     navigate,
     mouseMove,
-    mouseClick,
     mouseDown,
     mouseUp,
     mouseWheel,
