@@ -301,43 +301,38 @@ wss.on("connection", (ws, request) => {
                 // ─────────────────────────────
 
                 case "mouse": {
-                    if (
-                        message.action === "move"
-                    ) {
 
-                        await browser.mouseMove(
-                            message.x,
-                            message.y
-                        );
+    if (message.action === "move") {
 
-                    } else if (
-                        message.action === "down"
-                    ) {
+        await browser.mouseMove(
+            message.x,
+            message.y
+        );
 
-                        await browser.mouseDown(
-                            message.button
-                        );
+    } else if (message.action === "down") {
 
-                    } else if (
-                        message.action === "up"
-                    ) {
+        await browser.mouseDown(
+            message.x,
+            message.y,
+            message.button
+        );
 
-                        await browser.mouseUp(
-                            message.button
-                        );
+    } else if (message.action === "up") {
 
-                    } else if (
-                        message.action === "wheel"
-                    ) {
+        await browser.mouseUp(
+            message.button
+        );
 
-                        await browser.mouseWheel(
-                            message.dx,
-                            message.dy
-                        );
-                    }
+    } else if (message.action === "wheel") {
 
-                    break;
-                }
+        await browser.mouseWheel(
+            message.dx,
+            message.dy
+        );
+    }
+
+    break;
+}
 
                 // ─────────────────────────────
                 // Keyboard
