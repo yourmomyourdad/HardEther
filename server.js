@@ -42,8 +42,8 @@ wss.on("error", error => {
 // ─────────────────────────────────────────────
 
 function startVideoCapture(chromeHeight) {
-    const WIDTH = 1280;
-    const HEIGHT = 720;
+    const WIDTH = 1920;
+    const HEIGHT = 1080;
 
     // I420 / YUV420p = 1.5 bytes per pixel
     const FRAME_SIZE = WIDTH * HEIGHT * 3 / 2;
