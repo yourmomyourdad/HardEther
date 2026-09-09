@@ -3,7 +3,7 @@ pkill node || true
 pkill Xvfb || true
 pkill unclutter || true
 
-Xvfb :99 -screen 0 1280x805x24 -ac &
+Xvfb :99 -screen 0 1280x1000x24 -ac &
 
 sleep 2
 
