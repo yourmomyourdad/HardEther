@@ -1,24 +1,28 @@
 const { chromium } = require("playwright");
 
-let browser;
 let context;
 let page;
 
 async function startBrowser() {
-   browser = await chromium.launch({
-    headless: false
-});
+    context = await chromium.launchPersistentContext(
+        "./browser-profile",
+        {
+            headless: false,
 
-    context = await browser.newContext({
-        viewport: {
-    width: 1280,
-    height: 720
-}
-    });
+            viewport: {
+                width: 1280,
+                height: 720
+            }
+        }
+    );
 
-    page = await context.newPage();
+    page = context.pages()[0];
 
-    await page.goto("https://google.com")
+    if (!page) {
+        page = await context.newPage();
+    }
+
+    await page.goto("https://example.com");
 
     console.log("Browser started");
 
