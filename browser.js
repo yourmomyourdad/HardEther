@@ -124,8 +124,16 @@ async function mouseClick(button = 1) {
         String(button)
     ]);
 }
+async function mouseDown(button = 1) {
+    if (!windowId) await findBrowser();
 
-
+    await xdotool([
+        "click",
+        "--window",
+        windowId,
+        String(button)
+    ]);
+}
 async function mouseUp(button = 1) {
     // Do nothing.
 }
