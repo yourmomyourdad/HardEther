@@ -1,102 +1,18 @@
-const { chromium } = require("playwright");
-
-let context;
-let page;
-
-async function startBrowser() {
-    context = await chromium.launchPersistentContext(
-    "./browser-profile",
-    {
-        headless: false,
-
-        args: [
-    "--app=about:blank",
-    "--disable-session-crashed-bubble",
-    "--disable-save-password-bubble",
-    "--no-first-run",
-    "--no-default-browser-check"
-],
-
-        viewport: {
-            width: 1280,
-            height: 720
-        }
-    }
-);
-
-    page = context.pages()[0];
-
-    if (!page) {
-        page = await context.newPage();
-    }
-
-    await page.goto("https://example.com");
-
-    console.log("Browser started");
-
-    return page;
-}
-
-async function setViewport(width, height) {
-    if (!page) return;
-
-    await page.setViewportSize({
-        width,
-        height
-    });
-}
-
-async function navigate(url) {
-    if (!page) return;
-
-    await page.goto(url);
-}
-
-async function mouseMove(x, y) {
-    await page.mouse.move(x, y);
-}
-
-async function mouseDown(button) {
-    await page.mouse.down({ button });
-}
-
-async function mouseUp(button) {
-    await page.mouse.up({ button });
-}
-
-async function mouseWheel(dx, dy) {
-    await page.mouse.wheel(dx, dy);
-}
-
-async function keyDown(key) {
-    await page.keyboard.down(key);
-}
-
-async function keyUp(key) {
-    await page.keyboard.up(key);
-}
-async function screenshot() {
-    return await page.screenshot({
-        type: "png"
-    });
-}
 const { execFile } = require("child_process");
 
-async function findBarHeight() {
+const DISPLAY = ":99";
+
+let windowId = null;
+
+function xdotool(args) {
     return new Promise((resolve, reject) => {
         execFile(
             "xdotool",
-            [
-                "search",
-                "--onlyvisible",
-                "--class",
-                "chromium",
-                "getwindowgeometry"
-            ],
+            args,
             {
                 env: {
                     ...process.env,
-                    DISPLAY: ":99"
+                    DISPLAY
                 }
             },
             (error, stdout, stderr) => {
@@ -105,60 +21,165 @@ async function findBarHeight() {
                     return;
                 }
 
-                const match = stdout.match(
-                    /Geometry:\s*(\d+)x(\d+)/
-                );
-
-                if (!match) {
-                    reject(
-                        new Error(
-                            "Could not find Chromium window geometry"
-                        )
-                    );
-                    return;
-                }
-
-                const windowWidth = Number(match[1]);
-                const windowHeight = Number(match[2]);
-
-                const viewport = page.viewportSize();
-
-                if (!viewport) {
-                    reject(
-                        new Error(
-                            "Could not determine Playwright viewport"
-                        )
-                    );
-                    return;
-                }
-
-                const barHeight =
-                    windowHeight - viewport.height;
-
-                console.log(
-                    `Chromium: ${windowWidth}x${windowHeight}`
-                );
-
-                console.log(
-                    `Viewport: ${viewport.width}x${viewport.height}`
-                );
-
-                console.log(
-                    `Browser bar: ${barHeight}px`
-                );
-
-                resolve(barHeight);
+                resolve(stdout.trim());
             }
         );
     });
 }
+
+async function findBrowser() {
+    const output = await xdotool([
+        "search",
+        "--onlyvisible",
+        "--class",
+        "chromium"
+    ]);
+
+    const windows = output
+        .split("\n")
+        .map(x => x.trim())
+        .filter(Boolean);
+
+    if (!windows.length) {
+        throw new Error("Could not find Chromium window");
+    }
+
+    windowId = windows[windows.length - 1];
+
+    console.log("Chromium window:", windowId);
+
+    return windowId;
+}
+
+async function startBrowser() {
+    console.log("Starting Chromium...");
+
+    await xdotool([
+        "search",
+        "--onlyvisible",
+        "--class",
+        "chromium"
+    ]).catch(() => {});
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    await findBrowser();
+
+    await xdotool([
+        "windowactivate",
+        "--sync",
+        windowId
+    ]);
+
+    console.log("Chromium ready");
+
+    return windowId;
+}
+
+async function navigate(url) {
+    if (!windowId) {
+        await findBrowser();
+    }
+
+    await xdotool([
+        "windowactivate",
+        "--sync",
+        windowId
+    ]);
+
+    await xdotool([
+        "key",
+        "ctrl+l"
+    ]);
+
+    await xdotool([
+        "type",
+        "--delay",
+        "0",
+        url
+    ]);
+
+    await xdotool([
+        "key",
+        "Return"
+    ]);
+}
+
+async function mouseMove(x, y) {
+    if (!windowId) await findBrowser();
+
+    await xdotool([
+        "mousemove",
+        "--window",
+        windowId,
+        String(Math.round(x)),
+        String(Math.round(y))
+    ]);
+}
+
+async function mouseClick(button = 1) {
+    if (!windowId) await findBrowser();
+
+    await xdotool([
+        "click",
+        "--window",
+        windowId,
+        String(button)
+    ]);
+}
+
+async function mouseDown(button = 1) {
+    if (!windowId) await findBrowser();
+
+    await xdotool([
+        "mousedown",
+        String(button)
+    ]);
+}
+
+async function mouseUp(button = 1) {
+    if (!windowId) await findBrowser();
+
+    await xdotool([
+        "mouseup",
+        String(button)
+    ]);
+}
+
+async function mouseWheel(dx, dy) {
+    if (!windowId) await findBrowser();
+
+    if (dy < 0) {
+        await xdotool(["click", "4"]);
+    } else if (dy > 0) {
+        await xdotool(["click", "5"]);
+    }
+}
+
+async function keyDown(key) {
+    if (!windowId) await findBrowser();
+
+    await xdotool([
+        "keydown",
+        key
+    ]);
+}
+
+async function keyUp(key) {
+    if (!windowId) await findBrowser();
+
+    await xdotool([
+        "keyup",
+        key
+    ]);
+}
+
 module.exports = {
     startBrowser,
-    setViewport,
+    findBrowser,
     navigate,
-    findBarHeight,
-    screenshot,
     mouseMove,
+    mouseClick,
     mouseDown,
     mouseUp,
     mouseWheel,
