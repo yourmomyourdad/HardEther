@@ -1,3 +1,4 @@
+git pull
 pkill node || true
 pkill Xvfb || true
 pkill unclutter || true
