@@ -11,9 +11,9 @@ async function startBrowser() {
 
     context = await browser.newContext({
         viewport: {
-            width: 800,
-            height: 600
-        }
+    width: 1280,
+    height: 720
+}
     });
 
     page = await context.newPage();
