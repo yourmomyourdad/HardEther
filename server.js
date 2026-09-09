@@ -412,6 +412,8 @@ browser.startBrowser()
 
         // Start Xvfb screen capture → WebRTC
         startVideoCapture();
+        const height = await browser.findBarHeight();
+
         console.log(
             "🎯 FINAL BAR HEIGHT:",
             height
