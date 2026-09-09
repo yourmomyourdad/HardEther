@@ -137,26 +137,47 @@ async function mouseWheel(dx, dy) {
 }
 
 async function keyDown(key) {
-    if (!windowId) await findBrowser();
+    const keyMap = {
+        " ": "space",
+        "Backspace": "BackSpace",
+        "Enter": "Return",
+        "Escape": "Escape",
+        "ArrowUp": "Up",
+        "ArrowDown": "Down",
+        "ArrowLeft": "Left",
+        "ArrowRight": "Right"
+    };
+
+    const xKey = keyMap[key] || key;
 
     await xdotool([
         "keydown",
-        key
+        xKey
     ]);
 }
 
 async function keyUp(key) {
-    if (!windowId) await findBrowser();
+    const keyMap = {
+        " ": "space",
+        "Backspace": "BackSpace",
+        "Enter": "Return",
+        "Escape": "Escape",
+        "ArrowUp": "Up",
+        "ArrowDown": "Down",
+        "ArrowLeft": "Left",
+        "ArrowRight": "Right"
+    };
+
+    const xKey = keyMap[key] || key;
 
     await xdotool([
         "keyup",
-        key
+        xKey
     ]);
 }
 
 module.exports = {
     startBrowser,
-    findBrowser,
     navigate,
     mouseMove,
     mouseDown,
