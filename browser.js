@@ -18,21 +18,6 @@ async function startBrowser() {
 
     page = await context.newPage();
 
-
-    
-    
-  console.log("CLICK TEST START");
-
-await page.locator("a").click();
-
-console.log("CLICK TEST FINISHED");
-
-await page.waitForTimeout(3000);
-
-console.log("CURRENT URL:", page.url());
-
-
-
     
     await page.goto("https://example.com");
 
