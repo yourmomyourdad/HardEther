@@ -10,12 +10,12 @@ async function startBrowser() {
         headless: false,
 
         args: [
-            "--app=about:blank",
-            "--disable-infobars",
-            "--disable-session-crashed-bubble",
-            "--no-first-run",
-            "--no-default-browser-check"
-        ],
+    "--app=about:blank",
+    "--disable-session-crashed-bubble",
+    "--disable-save-password-bubble",
+    "--no-first-run",
+    "--no-default-browser-check"
+],
 
         viewport: {
             width: 1280,
