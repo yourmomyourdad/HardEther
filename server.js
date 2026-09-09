@@ -402,14 +402,9 @@ browser.startBrowser()
     .then(async () => {
         console.log("Chromium ready");
 
-        const height = await browser.findBarHeight();
+    
 
-        console.log(
-            "🎯 FINAL BAR HEIGHT:",
-            height
-        );
-
-        startVideoCapture(90);
+        startVideoCapture(0);
     })
     .catch(error => {
         console.error(
