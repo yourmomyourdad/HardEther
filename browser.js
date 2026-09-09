@@ -6,8 +6,13 @@ let page;
 
 async function startBrowser() {
     browser = await chromium.launch({
-        headless: false
-    });
+    headless: false,
+    args: [
+        "--kiosk",
+        "--window-size=1280,720",
+        "--window-position=0,0"
+    ]
+});
 
     context = await browser.newContext({
         viewport: {
@@ -18,25 +23,7 @@ async function startBrowser() {
 
     page = await context.newPage();
 
-    
-    await page.goto("https://example.com");
-    
-    await page.setContent(`
-        <!DOCTYPE html>
-        <html>
-        <body style="margin:0; background:#111; color:white; font:30px monospace;">
-            <div id="mouse">X: 0<br>Y: 0</div>
-
-            <script>
-                document.addEventListener("mousemove", event => {
-                    document.getElementById("mouse").innerHTML =
-                        "X: " + event.clientX +
-                        "<br>Y: " + event.clientY;
-                });
-            </script>
-        </body>
-        </html>
-    `);
+    await page.goto("https://google.com")
 
     console.log("Browser started");
 
