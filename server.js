@@ -337,26 +337,14 @@ wss.on("connection", (ws, request) => {
                 // ─────────────────────────────
 
                 case "keyboard": {
+    if (message.action === "down") {
+        await browser.keyDown(message.key);
+    } else if (message.action === "up") {
+        await browser.keyUp(message.key);
+    }
 
-                    if (
-                        message.action === "down"
-                    ) {
-
-                        await browser.keyDown(
-                            message.key
-                        );
-
-                    } else if (
-                        message.action === "up"
-                    ) {
-
-                        await browser.keyUp(
-                            message.key
-                        );
-                    }
-
-                    break;
-                }
+    break;
+}
             }
 
         } catch (error) {
