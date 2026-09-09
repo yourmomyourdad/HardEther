@@ -144,6 +144,7 @@ module.exports = {
     startBrowser,
     setViewport,
     navigate,
+    findBarHeight,
     screenshot,
     mouseMove,
     mouseDown,
