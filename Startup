@@ -10,6 +10,8 @@ sleep 2
 DISPLAY=:99 unclutter -display :99 -idle 0 &
 
 DISPLAY=:99 chromium \
+    --no-sandbox \
+    --disable-setuid-sandbox \
     --user-data-dir="$PWD/browser-profile" \
     --app=about:blank \
     --no-first-run \
