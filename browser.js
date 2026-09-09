@@ -8,12 +8,10 @@ async function startBrowser() {
    browser = await chromium.launch({
     headless: false,
     args: [
-        "--app=https://example.com",
-        "--window-size=1280,720",
-        "--window-position=0,0",
+        "--kiosk",
         "--start-fullscreen",
-        "--disable-features=Translate,OptimizationHints",
-        "--disable-infobars"
+        "--window-size=1280,720",
+        "--window-position=0,0"
     ]
 });
 
