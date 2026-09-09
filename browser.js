@@ -8,10 +8,7 @@ async function startBrowser() {
    browser = await chromium.launch({
     headless: false,
     args: [
-        "--kiosk",
-        "--start-fullscreen",
-        "--window-size=1280,720",
-        "--window-position=0,0"
+        "--kiosk"
     ]
 });
 
