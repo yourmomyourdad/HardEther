@@ -83,10 +83,6 @@ function startVideoCapture(chromeHeight) {
         }
     });
 
-    ffmpeg.stderr.on("data", data => {
-        console.log("FFmpeg:", data.toString());
-    });
-
     ffmpeg.on("close", code => {
         console.log("FFmpeg exited:", code);
     });
