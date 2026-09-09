@@ -2,9 +2,9 @@
   "name": "HardEther Node Server",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
 
-  "postCreateCommand": "npm install @roamhq/wrtc && sudo apt-get update && sudo apt-get install -y ffmpeg && sudo apt-get install -y xvfb && npm install && npx playwright install --with-deps chromium && sudo curl -L --output /usr/local/bin/cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 && sudo chmod +x /usr/local/bin/cloudflared",
+  "postCreateCommand": "npm install @roamhq/wrtc && sudo apt-get update && sudo apt-get install -y ffmpeg && sudo apt-get install -y xvfb && npm install && npx playwright install --with-deps chromium && sudo curl -L --output /usr/local/bin/cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 && sudo apt-get install -y unclutter && sudo chmod +x /usr/local/bin/cloudflared",
 
   "forwardPorts": [8080],
 
-  "postStartCommand": "pkill Xvfb || true; Xvfb :99 -screen 0 1280x720x24 -ac & DISPLAY=:99 node server.js"
+  "postStartCommand": "bash Startup"
 }
