@@ -409,7 +409,7 @@ browser.startBrowser()
             height
         );
 
-        startVideoCapture(height);
+        startVideoCapture(85);
     })
     .catch(error => {
         console.error(
