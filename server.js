@@ -404,26 +404,21 @@ wss.on("connection", (ws, request) => {
 // ─────────────────────────────────────────────
 
 browser.startBrowser()
-    .then(() => {
+    .then(async () => {
+        console.log("Chromium ready");
 
-        console.log(
-            "Chromium ready"
-        );
-
-        // Start Xvfb screen capture → WebRTC
-        startVideoCapture();
         const height = await browser.findBarHeight();
 
         console.log(
             "🎯 FINAL BAR HEIGHT:",
             height
         );
+
+        startVideoCapture(height);
     })
     .catch(error => {
-
         console.error(
             "Failed to start Chromium:",
             error
         );
-
     });
