@@ -54,7 +54,7 @@ function startVideoCapture(chromeHeight) {
         "-f", "x11grab",
         "-video_size", `${WIDTH}x${HEIGHT}`,
         "-framerate", "30",
-        "-i", ":99.0",
+        "-i", `:99.0+0,${chromeHeight}`,
 
         "-f", "rawvideo",
         "-pix_fmt", "yuv420p",
